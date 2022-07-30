@@ -59,7 +59,7 @@ $content = 'bla bla bla bla bla this is the page content';
 
     <!-- PAGE HEADER -->
     <header>
-        <img src="<?= COMPANY_LOGO ?>">
+        <img src="<?= COMPANY_LOGO ?>" alt="COMPANY-LOGO-ICON">
         <h2 style="display:inline">
             ClassicModels.com
         </h2>
