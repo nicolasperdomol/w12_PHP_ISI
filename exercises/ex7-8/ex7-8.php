@@ -52,7 +52,7 @@ function productsCatalogue()
     $productCatalogue = "<table><tr>";
     foreach ($products as $product) {
         $productCatalogue .= "<td class=\"product\">";
-        $productCatalogue .= "<div><img src=\"" . PATH . $product["pic"] . "\"></div>";
+        $productCatalogue .= "<div><img title=\"" . $product["name"] . "\" src=\"" . PATH . $product["pic"] . "\"></div>";
         $productCatalogue .= "<div class='name'>" . $product["name"] . "</div>";
         $productCatalogue .= "<div class='description'>" . $product["description"] . "</div>";
         $productCatalogue .= "<div class=\"price\">" . $product["price"] . "</div>";
@@ -180,6 +180,8 @@ $products = [
             case 2:
                 productsCatalogue();
                 break;
+            default:
+                echo "INVALID OPERATION";
         }
         ?>
     </main>
