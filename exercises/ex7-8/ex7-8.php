@@ -15,7 +15,7 @@ const PATH = "products_images/";
 
 /* web page variable properties */
 $lang = 'en-CA';
-$title = 'Product List - ManchesterUnitedCanada.com - Home Page';
+$title = 'Product List - ' . COMPANY_NAME . ' - Home Page';
 $description = 'Scale Models of Classic Cars, Trucks, Planes, Motorcyles and more';
 $author = 'Stéphane Lapointe';
 
@@ -31,33 +31,36 @@ function productsList()
     global $products;
     $product_keys = array_keys($products[0]);
 
-    echo "<table class=\"productsList\"><tr>";
+    $productList = "<table class=\"productsList\"><tr>";
     foreach ($product_keys as $key) {
-        echo "<th>$key</th>";
+        $productList .= "<th>$key</th>";
     }
-    echo "</tr>";
+    $productList .= "</tr>";
     foreach ($products as $product) {
         foreach ($product as $value) {
-            echo "<td>$value</td>";
+            $productList .= "<td>$value</td>";
         }
-        echo "</tr>";
+        $productList .= "</tr>";
     }
-    echo "</table>";
+    $productList .= "</table>";
+    echo $productList;
 }
 
 function productsCatalogue()
 {
     global $products;
-    echo "<table><tr>";
+    $productCatalogue = "<table><tr>";
     foreach ($products as $product) {
-        echo "<td class=\"product\">";
-        echo "<div><img src=\"" . PATH . $product["pic"] . "\"></div>";
-        echo "<div class='name'>" . $product["name"] . "</div>";
-        echo "<div class='description'>" . $product["description"] . "</div>";
-        echo "<div class=\"price\">" . $product["price"] . "</div>";
-        echo "</td>";
+        $productCatalogue .= "<td class=\"product\">";
+        $productCatalogue .= "<div><img src=\"" . PATH . $product["pic"] . "\"></div>";
+        $productCatalogue .= "<div class='name'>" . $product["name"] . "</div>";
+        $productCatalogue .= "<div class='description'>" . $product["description"] . "</div>";
+        $productCatalogue .= "<div class=\"price\">" . $product["price"] . "</div>";
+        $productCatalogue .= "</td>";
     }
-    echo "</tr></table>";
+    $productCatalogue .= "</tr></table>";
+
+    echo $productCatalogue;
 }
 
 // list of 6 products as it would be retrieved from a database
