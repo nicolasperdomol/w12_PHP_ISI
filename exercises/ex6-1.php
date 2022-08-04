@@ -18,6 +18,15 @@ function echoListItem($value)
         echo "<li class=\"selected\"><a href=\"#\">$value</a></li>";
 }
 
+function listItemByArray($value)
+{
+    global $selected;
+    $toReturn = "<li class=";
+    $toReturn .= (($selected == $value) ? 'selected' : 'menu-item');
+    $toReturn  .= '><a href="#">' . $value . '</a></li>';
+    return $toReturn;
+}
+
 
 ?>
 
@@ -56,6 +65,9 @@ function echoListItem($value)
             echoListItem(PRODUCT);
             echoListItem(ABOUT);
             echoListItem(IDEA);
+
+            echo "<br><br>";
+            echo implode("", array_map("listItemByArray", [HOME, PRODUCT, ABOUT, IDEA]));
             ?>
         </ul>
     </nav>
