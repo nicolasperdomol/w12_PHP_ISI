@@ -42,6 +42,7 @@ switch ($op) {
         products::productsCatalogue();
         break;
     default:
+        http_response_code(400);
         $pageData = DEFAULT_PAGE_DATA;
         $pageData['title'] = "INVALID OPERATION";
         $pageData['description'] = "INVALID OPERATION";
