@@ -35,7 +35,7 @@ function logVisitor()
     fclose($f);
 }
 
-function addOperationCount($path)
+function viewCount($path)
 {
     logVisitor();
 
@@ -57,7 +57,7 @@ function createFiles()
 
 function productsList()
 {
-    addOperationCount("log/productsListCounter.txt");
+    viewCount("log/productsListCounter.txt");
     global $products;
     $product_keys = array_keys($products[0]);
 
@@ -78,7 +78,7 @@ function productsList()
 
 function productsCatalogue()
 {
-    addOperationCount("log/productsCatalogueCounter.txt");
+    viewCount("log/productsCatalogueCounter.txt");
     global $products;
     $productCatalogue = "<table><tr>";
     foreach ($products as $product) {
