@@ -19,6 +19,8 @@ $title = 'Product List - ' . COMPANY_NAME . ' - Home Page';
 $description = 'Scale Models of Classic Cars, Trucks, Planes, Motorcyles and more';
 $author = 'Stéphane Lapointe';
 
+
+createFiles();
 $op = -1;
 if (isset($_REQUEST['op'])) {
     $op = $_REQUEST['op'];
@@ -26,8 +28,36 @@ if (isset($_REQUEST['op'])) {
     $op = 1;
 }
 
+function logVisitor()
+{
+    $f = fopen("log" . DIRECTORY_SEPARATOR . "visitor.log", "a");
+    fwrite($f, date(DATE_RFC2822) . "\n");
+    fclose($f);
+}
+
+function addOperationCount($path)
+{
+    logVisitor();
+
+    $views = file_get_contents($path);
+    file_put_contents($path, $views + 1);
+}
+
+function createFiles()
+{
+    $listPath = "log" . DIRECTORY_SEPARATOR . "productsListCounter.txt";
+    $cataloguePath = "log" . DIRECTORY_SEPARATOR . "productsCatalogueCounter.txt";
+    if (!file_exists($listPath)) {
+        file_put_contents($listPath, "0");
+    }
+    if (!file_exists($cataloguePath)) {
+        file_put_contents($cataloguePath, "0");
+    }
+}
+
 function productsList()
 {
+    addOperationCount("log/productsListCounter.txt");
     global $products;
     $product_keys = array_keys($products[0]);
 
@@ -48,6 +78,7 @@ function productsList()
 
 function productsCatalogue()
 {
+    addOperationCount("log/productsCatalogueCounter.txt");
     global $products;
     $productCatalogue = "<table><tr>";
     foreach ($products as $product) {
@@ -193,6 +224,7 @@ $products = [
         <?= COMPANY_NAME . "<br>" ?>
         <?= COMPANY_STREET_ADDRESS . " " . COMPANY_CITY . " " . COMPANY_POSTAL_CODE . " " . COMPANY_COUNTRY . "<br>"  ?>
         <?= COMPANY_PHONE_NUMBER . " | " . COMPAY_EMAIL . "<br>"  ?>
+        <?php echo "<br><span>List count: " . file_get_contents("log/productsListCounter.txt") . "</span><br><span>Catalogue count: " . file_get_contents("log/productsCatalogueCounter.txt") . "</span>" ?>;
     </footer>
     </div>
 </body>

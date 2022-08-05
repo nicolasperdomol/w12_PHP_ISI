@@ -49,10 +49,12 @@ $otherColors = [
     'black',
 ];
 
+arrayDisplay(array_merge($colors, $otherColors));
 
 showTitle('Exercise 4: one word per line with explode() and foreach');
 $sentence = 'Hello my friends! How are you today?';
-// YOUR CODE HERE
+$splitted_sentence = explode(" ", $sentence);
+arrayDisplay($splitted_sentence);
 
 showTitle('Exercise 5: reverse the array with array_reverse()');
-// YOUR CODE HERE
+arrayDisplay(array_reverse($splitted_sentence));
