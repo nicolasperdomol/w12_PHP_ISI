@@ -31,7 +31,7 @@ switch ($op) {
         $pageData = DEFAULT_PAGE_DATA;
         $pageData['title'] = "HOME";
         $pageData['description'] = "HOME";
-        $pageData['content'] = "HOME";
+        $pageData['content'] = "<h2>Welcome to the home page!</h2>";
         webpage::render($pageData);
         break;
 
