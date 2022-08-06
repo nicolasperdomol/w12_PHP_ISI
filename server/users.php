@@ -82,7 +82,6 @@ class users
         $content .= "</form>";
         $page_data['content'] = $content;
         webpage::render($page_data);
-        var_dump($_POST);
     }
 
     public static function registerVerify()
