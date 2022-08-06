@@ -38,7 +38,7 @@ switch ($op) {
     case 50:
         //file download from server to client
         // set the file type, here a PDF file, see link below for other file types
-        header('Content-type: application/pdf');
+        header('Content-type: application/pdf');
         // file name is some_file.pdf, the web browser asks to confirm the download
         header('Content-Disposition: attachment; filename=some_file.pdf');
         // send out the file, read and send directly with readfile() function
