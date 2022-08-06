@@ -5,6 +5,7 @@ require_once "globals.php";
 require_once "products.php";
 require_once "view/webpage.php";
 require_once "tools/tools.php";
+require_once "users.php";
 
 createFiles();
 $op = -1;
@@ -31,8 +32,38 @@ switch ($op) {
         $pageData = DEFAULT_PAGE_DATA;
         $pageData['title'] = "HOME";
         $pageData['description'] = "HOME";
-        $pageData['content'] = "<h2>Welcome to the home page!</h2>";
+
+        #detect client prefered language
+        $lang = substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2);
+        switch ($lang) {
+            case 'es':
+                $pageData["content"] = "<h2>Bienvendio a la pagina principal</h2>";
+                break;
+            default:
+                //default to english
+                $pageData["content"] = "<h2>Welcome to the home page!</h2>";
+                break;
+        }
         webpage::render($pageData);
+        break;
+
+    case 1:
+        //LOGIN
+        users::login();
+        break;
+
+    case 2:
+        //Form login verify
+        users::loginVerify();
+        break;
+
+    case 3:
+        //REGISTER
+        users::register();
+        break;
+    case 4:
+        //Regsiter validation
+        users::registerVerify();
         break;
 
     case 50:

@@ -16,3 +16,9 @@ footer {
     color: white;
     padding: 10px
 }
+
+.errorMsg{
+    border-radius: 2px;
+    background-color: lightpink;
+    font-weight: bold;
+}
