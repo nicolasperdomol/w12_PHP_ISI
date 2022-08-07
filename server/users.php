@@ -42,17 +42,17 @@ class users
         $content .= '<input type="hidden" value="4" name="op">';
         $content .= "<h2>Register</h2>";
         if ($msg != null) {
-            $content .= "<p class='errorMsg'>$msg</p>";
+            $content .= "<p class='form-text errorMsg'>$msg</p>";
         }
         $content .= "<h4>General Information **</h4>";
-        $content .= "<label for='fullname'><input placeholder='fullname' type='text' name='fullname' id='fullname' maxlength='50' " . fillValue($autofill_values, 'fullname', 50) . " required></label>";
+        $content .= "<label class='form-label' for='fullname'><input placeholder='fullname' type='text' name='fullname' id='fullname' maxlength='50' " . fillValue($autofill_values, 'fullname', 50) . " required></label>";
 
         $content .= "<br><h4>Address (optional)</h4>";
-        $content .= "<label for='address1'><input placeholder='Address line 1' type='text' name='address1' id='address1' " .  fillValue($autofill_values, 'address1', 255) . "maxlength='255'></label>";
-        $content .= "<br><label for='address2'><input placeholder='Address line 2' type='text' name='address2' id='address2' " .  fillValue($autofill_values, 'address2', 255) . " maxlength='255'></label>";
+        $content .= "<label class='form-label' for='address1'><input placeholder='Address line 1' type='text' name='address1' id='address1' " .  fillValue($autofill_values, 'address1', 255) . "maxlength='255'></label>";
+        $content .= "<br><label class='form-label' for='address2'><input placeholder='Address line 2' type='text' name='address2' id='address2' " .  fillValue($autofill_values, 'address2', 255) . " maxlength='255'></label>";
 
         $content .= "<br><h4>City (optional)</h4>";
-        $content .= "<label for='city'><input placeholder='city' type='text' name='city' id='city' " .  fillValue($autofill_values, 'city', 50) . " maxlength='50'></label>";
+        $content .= "<label class='form-label' for='city'><input placeholder='city' type='text' name='city' id='city' " .  fillValue($autofill_values, 'city', 50) . " maxlength='50'></label>";
 
         $content .= "<br><h4>Province (optional)</h4>";
         $content .= "<select name='province'>";
@@ -63,21 +63,21 @@ class users
         $content .= "</select>";
 
         $content .= "<br><h4>Postal code (optional)</h4>";
-        $content .= "<label for='postal_code'><input type='text' name='postal_code' " .  fillValue($autofill_values, 'postal_code', 7) . " id='postal_code' maxlength='7'></label>";
+        $content .= "<label class='form-label' for='postal_code'><input type='text' name='postal_code' " .  fillValue($autofill_values, 'postal_code', 7) . " id='postal_code' maxlength='7'></label>";
 
         $content .= "<br><h4>Language (required)**</h4>";
         $content .= "<input type='radio' id='fr' name = 'language' value = 'fr'>";
-        $content .= "<label for='fr'>French</label><br>";
+        $content .= "<label class='form-label' for='fr'>French</label><br>";
         $content .= "<input type='radio' id='en' name = 'language' value = 'en'>";
-        $content .= "<label for='en'>English</label><br>";
+        $content .= "<label class='form-label' for='en'>English</label><br>";
         $content .= "<input type='radio' id='other' name = 'language' value = 'other'>";
-        $content .= "<label for='other'>Other <input name='other_lang' id='other_lang' " .  fillValue($autofill_values, 'other_lang', 25) . " maxlength='25'></label><br><br>";
+        $content .= "<label class='form-label' for='other'>Other <input name='other_lang' id='other_lang' " .  fillValue($autofill_values, 'other_lang', 25) . " maxlength='25'></label><br><br>";
 
         $content .= "<h4>Connection Info (required) **</h4>";
-        $content .= "<label for='email'><input placeholder='email' type='email' id='email' name='email' maxlength='126' " .  fillValue($autofill_values, 'email', 126) . "  required></label><br/>";
-        $content .= "<label for='pw1'><input placeholder='password' type='password' id='pw1' name='pw1' maxlength='16' required></label><br/>";
-        $content .= "<label for='pw2'><input placeholder='repeat your password' type='password' id='pw2' name='pw2' maxlength='16' required></label><br/><br/>";
-        $content .= "<input type='checkbox' id='spam_ok' name='spam_ok' value='1'><label for='spam_ok'> I accept periodically receive information about new products</label><br>";
+        $content .= "<label class='form-label' for='email'><input placeholder='email' type='email' id='email' name='email' maxlength='126' " .  fillValue($autofill_values, 'email', 126) . "  required></label><br/>";
+        $content .= "<label class='form-label' for='pw1'><input placeholder='password' type='password' id='pw1' name='pw1' maxlength='16' required></label><br/>";
+        $content .= "<label class='form-label' for='pw2'><input placeholder='repeat your password' type='password' id='pw2' name='pw2' maxlength='16' required></label><br/><br/>";
+        $content .= "<input type='checkbox' id='spam_ok' name='spam_ok' value='1'><label for='spam_ok'>I accept periodically receive information about new products</label><br>";
         $content .= "<br><button type='submit'>Continue</button><br/>";
         $content .= "</form>";
         $page_data['content'] = $content;
@@ -133,6 +133,25 @@ class users
                 unset($_POST['pw2']);
 
                 self::register("Please select your prefered language", $_POST);
+            } else if (!isset($_POST['fullname'])) {
+                $no_errors = false;
+
+                //Unset passwords
+                unset($_POST['pw1']);
+                unset($_POST['pw2']);
+
+                self::register("Please enter your fullname", $_POST);
+            } else if (!isset($_POST['email'])) {
+                $no_errors = false;
+
+                //Unset passwords
+                unset($_POST['pw1']);
+                unset($_POST['pw2']);
+
+                self::register("Enter your fullname", $_POST);
+            } else if (!isset($_POST['pw1']) or !isset($_POST['pw2'])) {
+                $no_errors = false;
+                self::register("Enter a password", $_POST);
             }
         }
 
