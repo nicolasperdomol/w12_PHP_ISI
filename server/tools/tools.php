@@ -22,7 +22,7 @@ function checkInput($name, $maxlength = 0)
             header("HTTP/1.0 400 Input greater than maxlength in tools::checkInput()");
             exit("HTTP/1.0 400 Input greater than maxlength in tools::checkInput()");
         }
-        return $_REQUEST[$name];
+        return htmlspecialchars($_REQUEST[$name]);
     } else {
         header("HTTP/1.0 400 Input $name missing on the login form in users.php");
         exit("HTTP/1.0 400 Input $name missing on the login form in users.php");

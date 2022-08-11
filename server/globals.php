@@ -20,3 +20,5 @@ const DEFAULT_PAGE_DATA = [
     'author' => 'Stéphane Lapointe',
     'content' => ''
 ];
+
+const MAX_LOGIN_ATTEMPT = 3;

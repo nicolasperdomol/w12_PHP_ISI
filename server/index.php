@@ -1,4 +1,5 @@
 <?php
+session_start();
 /* EXERCISE 3-1A and 3-1B */
 /* EXERCISE 3-1B */
 require_once "globals.php";
@@ -27,24 +28,36 @@ function createFiles()
     }
 }
 
+function home()
+{
+    $pageData = DEFAULT_PAGE_DATA;
+    $pageData['title'] = "HOME";
+    $pageData['description'] = "HOME";
+
+    #detect client prefered language
+    $lang = substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2);
+    switch ($lang) {
+        case 'es':
+            $pageData["content"] = "<h2>Bienvendio a la pagina principal</h2>";
+            break;
+        default:
+            //default to english
+            $pageData["content"] = "<h2>Welcome to the home page!</h2>";
+            break;
+    }
+
+    if (isset($_COOKIE['lastVisit'])) {
+        $pageData['content'] .= "<br>" . $_COOKIE['lastVisit'];
+    } else {
+        $pageData['content'] .= "<br>Welcome, this is your first visit";
+        setcookie('lastVisit', date(DATE_RFC2822));
+    }
+    webpage::render($pageData);
+}
+
 switch ($op) {
     case 0:
-        $pageData = DEFAULT_PAGE_DATA;
-        $pageData['title'] = "HOME";
-        $pageData['description'] = "HOME";
-
-        #detect client prefered language
-        $lang = substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2);
-        switch ($lang) {
-            case 'es':
-                $pageData["content"] = "<h2>Bienvendio a la pagina principal</h2>";
-                break;
-            default:
-                //default to english
-                $pageData["content"] = "<h2>Welcome to the home page!</h2>";
-                break;
-        }
-        webpage::render($pageData);
+        home();
         break;
 
     case 1:
@@ -64,6 +77,11 @@ switch ($op) {
     case 4:
         //Regsiter validation
         users::registerVerify();
+        break;
+
+    case 5:
+        //Log out
+        users::logout();
         break;
 
     case 50:
