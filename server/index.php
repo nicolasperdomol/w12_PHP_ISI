@@ -47,10 +47,11 @@ function home()
     }
 
     if (isset($_COOKIE['lastVisit'])) {
-        $pageData['content'] .= "<br>" . $_COOKIE['lastVisit'];
+        $pageData['content'] .= "<br><span>Your last visit was on " . $_COOKIE['lastVisit'] . "</span>";
+        setcookie('lastVisit', date(DATE_RFC2822), strtotime(+31536000));
     } else {
         $pageData['content'] .= "<br>Welcome, this is your first visit";
-        setcookie('lastVisit', date(DATE_RFC2822));
+        setcookie('lastVisit', date(DATE_RFC2822), strtotime(+31536000));
     }
     webpage::render($pageData);
 }
