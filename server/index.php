@@ -8,13 +8,6 @@ require_once "view/webpage.php";
 require_once "tools/tools.php";
 require_once "users.php";
 
-createFiles();
-$op = -1;
-if (isset($_REQUEST['op'])) {
-    $op = $_REQUEST['op'];
-} else {
-    $op = 0;
-}
 
 function createFiles()
 {
@@ -56,62 +49,74 @@ function home()
     webpage::render($pageData);
 }
 
-switch ($op) {
-    case 0:
-        home();
-        break;
+function main()
+{
+    //main-controller
+    createFiles();
+    $op = -1;
+    if (isset($_REQUEST['op'])) {
+        $op = $_REQUEST['op'];
+    } else {
+        $op = 0;
+    }
 
-    case 1:
-        //LOGIN
-        users::login();
-        break;
+    switch ($op) {
+        case 0:
+            home();
+            break;
 
-    case 2:
-        //Form login verify
-        users::loginVerify();
-        break;
+        case 1:
+            //LOGIN
+            users::login();
+            break;
 
-    case 3:
-        //REGISTER
-        users::register();
-        break;
-    case 4:
-        //Regsiter validation
-        users::registerVerify();
-        break;
+        case 2:
+            //Form login verify
+            users::loginVerify();
+            break;
 
-    case 5:
-        //Log out
-        users::logout();
-        break;
+        case 3:
+            //REGISTER
+            users::register();
+            break;
+        case 4:
+            //Regsiter validation
+            users::registerVerify();
+            break;
 
-    case 50:
-        //file download from server to client
-        // set the file type, here a PDF file, see link below for other file types
-        header('Content-type: application/pdf');
-        // file name is some_file.pdf, the web browser asks to confirm the download
-        header('Content-Disposition: attachment; filename=some_file.pdf');
-        // send out the file, read and send directly with readfile() function
-        readfile('some_file.pdf');
-        break;
+        case 5:
+            //Log out
+            users::logout();
+            break;
 
-    case 51:
-        header("location: http://www.amazon.ca");
-        break;
+        case 50:
+            //file download from server to client
+            // set the file type, here a PDF file, see link below for other file types
+            header('Content-type: application/pdf');
+            // file name is some_file.pdf, the web browser asks to confirm the download
+            header('Content-Disposition: attachment; filename=some_file.pdf');
+            // send out the file, read and send directly with readfile() function
+            readfile('some_file.pdf');
+            break;
 
-    case 100:
-        products::productsList();
-        break;
-    case 101:
-        products::productsCatalogue();
-        break;
-    default:
-        header("HTTP/1.0 400 This operation won't be implemented in the near future, try a different operation.");
-        $pageData = DEFAULT_PAGE_DATA;
-        $pageData['title'] = "INVALID OPERATION";
-        $pageData['description'] = "INVALID OPERATION";
-        $pageData['content'] = "INVALID OPERATION";
-        webpage::render($pageData);
+        case 51:
+            header("location: http://www.amazon.ca");
+            break;
+
+        case 100:
+            products::productsList();
+            break;
+        case 101:
+            products::productsCatalogue();
+            break;
+        default:
+            header("HTTP/1.0 400 This operation won't be implemented in the near future, try a different operation.");
+            $pageData = DEFAULT_PAGE_DATA;
+            $pageData['title'] = "INVALID OPERATION";
+            $pageData['description'] = "INVALID OPERATION";
+            $pageData['content'] = "INVALID OPERATION";
+            webpage::render($pageData);
+    }
 }
 
-#webpage::render(DEFAULT_PAGE_DATA);
+main();

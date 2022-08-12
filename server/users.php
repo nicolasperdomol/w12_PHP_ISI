@@ -44,12 +44,12 @@ class users
      */
     public static function register($msg = null, $autofill_values = null)
     {
-        var_dump($autofill_values);
+        #var_dump($autofill_values);
         $page_data = DEFAULT_PAGE_DATA;
         $page_data['title'] = COMPANY_NAME . '- Register your account';
         $page_data['description'] = 'Connect to track to shop and track your order and more';
 
-        $content = '<form action="index.php" method="POST">';
+        $content = '<form enctype="multipart/form-data" action="index.php" method="POST">';
         $content .= '<input type="hidden" value="4" name="op">';
         $content .= "<h2>Register</h2>";
         if ($msg != null) {
@@ -106,6 +106,7 @@ class users
         $content .= "<label class='form-label' for='pw'><input placeholder='password' type='password' id='pw' name='pw' maxlength='16' required></label><br/>";
         $content .= "<label class='form-label' for='pw2'><input placeholder='repeat your password' type='password' id='pw2' name='pw2' maxlength='16' required></label><br/><br/>";
         $content .= "<input type='checkbox' id='spam_ok' name='spam_ok' value='1' checked><label for='spam_ok'>I accept periodically receive information about new products</label><br>";
+        $content .= "<br><label>Select a picture <input type='file' name='product_image'></label>";
         $content .= "<br><button type='submit'>Continue</button><br/>";
         $content .= "</form>";
         $page_data['content'] = $content;
@@ -117,15 +118,50 @@ class users
      */
     public static function registerVerify()
     {
+        // if (!isset($_FILES['product_image']) or $_FILES['product_image'] == 'none') {
+        //     echo 'No image selected';
+        // } elseif ($_FILES['product_image']['error'] !== UPLOAD_ERR_OK) {
+        //     echo 'error in file upload';
+        // } elseif ($_FILES['product_image']['size'] > 1000000) {
+        //     //set 1MB as the update limit
+        //     echo 'error file to big';
+        // } elseif (!getimagesize($_FILES['product_image']['tmp_name'])) {
+        //     echo 'error document is not an image';
+        // } else {
+        //     $pathParts = pathinfo($_FILES['product_image']['name']);
+        //     $ext = $pathParts['extension'];
+        //     if ($ext !== 'png' and $ext !== 'jpg' and $ext !== 'gif' and $ext !== 'jpeg') {
+        //         echo 'error image format not supported';
+        //     } else {
+        //         $target_file = 'user_images' . DIRECTORY_SEPARATOR . basename($_FILES['product_image']['name']);
+        //         if (file_exists($target_file)) {
+        //             echo 'file already exists';
+        //         } else {
+        //             //Migrating the file from temp to folder
+        //             if (move_uploaded_file($_FILES['product_image']['tmp_name'], $target_file)) {
+        //                 echo 'file uploaded';
+        //                 echo '<img alt="new picture" width="20%" src="' . $target_file . '"/>';
+        //             } else {
+        //                 echo 'file transfer from temp to folder failed';
+        //             }
+        //         }
+        //     }
+        // }
+
+        $error_message = "";
+        Picture_Uploaded_Save_File('product_image', 'user_images\\');
+        if ($error_message == 'OK') {
+            $error_message = '';
+        }
+
         $fullname = checkInput("fullname", 50);
-        $address1 = checkInput("address1");
+        $address1 = checkInput("address1", 50);
         $email = checkInput("email", 126);
         $pw = checkInput("pw", 8);
         $pw2 = checkInput("pw2", 8);
         $spam_ok = false;
 
         $no_errors = true;
-        $error_message = "";
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error_message .= "Email format is wrong<br>";
