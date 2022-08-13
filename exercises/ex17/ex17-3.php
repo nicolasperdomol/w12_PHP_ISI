@@ -4,7 +4,7 @@ const DB_PORT = 3306; //default is 3306 for an SQL server
 const DB_NAME = 'teachers'; //for example
 const DB_CHARSET = 'utf8mb4'; //for French accent set charset
 const DB_USER_NAME = 'root';
-const DB_USER_PW = 'Np!1202236';
+const DB_USER_PW = 'root';
 
 function read_teachers_ordered_by_region_yearHired()
 {
