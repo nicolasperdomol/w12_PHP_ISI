@@ -124,7 +124,11 @@ function main()
             customers::listJSON();
             break;
         case 500:
-            offices::list();
+            if (isset($_SESSION["email"])) {
+                offices::list();
+            } else {
+                header("HTTP/1.0 503 todo display an error page");
+            }
             break;
         default:
             header("HTTP/1.0 400 This operation won't be implemented in the near future, try a different operation.");

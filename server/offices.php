@@ -84,7 +84,10 @@ class offices
                             <td>{$office["city"]}</td>
                             <td>{$office["addressLine1"]}</td>
                             <td>{$office["country"]}</td>
-                            <td>a</td>
+                            <td>
+                                <a href="index.php?op=503"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                <a href="index.php?op=503"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            </td>
                         </tr>
                     HTML;
                 }
