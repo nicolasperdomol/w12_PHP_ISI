@@ -110,6 +110,7 @@ class users
         $content .= "<br><button type='submit'>Continue</button><br/>";
         $content .= "</form>";
         $page_data['content'] = $content;
+        var_dump($_POST);
         webpage::render($page_data);
     }
 
@@ -157,8 +158,8 @@ class users
         $fullname = checkInput("fullname", 50);
         $address1 = checkInput("address1", 50);
         $email = checkInput("email", 126);
-        $pw = checkInput("pw", 8);
-        $pw2 = checkInput("pw2", 8);
+        $pw = checkInput("pw", 50);
+        $pw2 = checkInput("pw2", 50);
         $spam_ok = false;
 
         $no_errors = true;
@@ -297,6 +298,7 @@ class users
                 $page_data['title'] = $email . " account";
                 $page_data['description'] = "You are connected";
                 $page_data["content"] = "<h2>You are connected.</h2>";
+                logVisitor();
                 webpage::render($page_data);
                 die();
             }

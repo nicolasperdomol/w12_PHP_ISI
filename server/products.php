@@ -104,4 +104,17 @@ class products
         $page_data['content'] = $productCatalogue;
         webpage::render($page_data);
     }
+
+    public static function listJSON()
+    {
+        $DB = new db_pdo();
+        $DB->connect();
+
+        $customers = $DB->table("products");
+
+        $arrayJSON = json_encode($customers, JSON_PRETTY_PRINT);
+        header('Content-Type: application/json; charset=UTF-8');
+        http_response_code(200);
+        echo $arrayJSON;
+    }
 }

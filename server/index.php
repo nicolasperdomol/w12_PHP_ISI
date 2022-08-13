@@ -7,6 +7,7 @@ require_once "products.php";
 require_once "view/webpage.php";
 require_once "tools/tools.php";
 require_once "users.php";
+require_once "customers.php";
 
 
 function createFiles()
@@ -108,6 +109,19 @@ function main()
             break;
         case 101:
             products::productsCatalogue();
+            break;
+        case 120:
+            products::listJSON();
+            break;
+        case 400:
+            if (isset($_SESSION["email"])) {
+                customers::list();
+            } else {
+                header("location:index.php");
+            }
+            break;
+        case 420:
+            customers::listJSON();
             break;
         default:
             header("HTTP/1.0 400 This operation won't be implemented in the near future, try a different operation.");
