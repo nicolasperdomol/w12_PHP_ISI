@@ -8,7 +8,7 @@ require_once "view/webpage.php";
 require_once "tools/tools.php";
 require_once "users.php";
 require_once "customers.php";
-
+require_once "offices.php";
 
 function createFiles()
 {
@@ -122,6 +122,9 @@ function main()
             break;
         case 420:
             customers::listJSON();
+            break;
+        case 500:
+            offices::list();
             break;
         default:
             header("HTTP/1.0 400 This operation won't be implemented in the near future, try a different operation.");

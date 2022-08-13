@@ -9,6 +9,9 @@
     <a href='index.php?op=400'>Customers</a>
     <a href='index.php?op=420'>CustomersJSON</a>
 
+    <!--Offices operations -->
+    <a href='index.php?op=500'>Offices</a>
+
     <?php
     $default_options = <<<HTML
     <a href='index.php?op=1'>Login</a>
