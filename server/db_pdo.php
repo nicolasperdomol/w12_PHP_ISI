@@ -1,6 +1,17 @@
 <?php
 class db_pdo
 {
+    //remote infinity free web site http://w12-php.epizy.com/
+    // const DB_SERVER_TYPE = 'mysql'; // MySQL or MariaDB server
+    // const DB_HOST = 'sql108.epizy.com'; // local server on my laptop
+    // const DB_PORT = 3306; // optional, default 3306, use 3307 for MariaDB
+    // const DB_NAME = 'epiz_32411808_classicmodels'; // for Database classicmodels
+    // const DB_CHARSET = 'utf8mb4'; //optional
+
+    // const DB_USER_NAME = 'epiz_32411808'; // default user, other users can be created with phpMyAdmin
+    // const DB_PASSWORD = 'XDAnf7xfDk';
+
+    //LOCALHOST
     const DB_SERVER_TYPE = 'mysql'; // MySQL or MariaDB server
     const DB_HOST = '127.0.0.1'; // local server on my laptop
     const DB_PORT = 3307; // optional, default 3306, use 3307 for MariaDB
@@ -29,6 +40,12 @@ class db_pdo
             $this->DB_connexion = new PDO($DSN, self::DB_USER_NAME, self::DB_PASSWORD, self::DB_OPTIONS);
             //echo 'connected to DB!';
         } catch (PDOException $e) {
+            //Send email to system admin
+            // mail(
+            //     "nicolasperdomol@hotmail.com",
+            //     "W12_PHP_ISI Database connection error on classicmodels.com website",
+            //     $e->getMessage()
+            // );
             header('HTTP/1.0 500 Database connection error ' . $e->getMessage());
             exit('Database connection error ' . $e->getMessage());
         }

@@ -1,4 +1,17 @@
 <?php
+/* Exception class. */
+
+use PHPMailer\PHPMailer\PHPMailer;
+
+
+require 'src/Exception.php';
+
+/* The main PHPMailer class. */
+require 'src/PHPMailer.php';
+
+/* SMTP class, needed if you want to use SMTP. */
+require 'src/SMTP.php';
+
 
 function logVisitor()
 {
@@ -26,6 +39,37 @@ function viewCount($path)
 
     $views = file_get_contents($path);
     file_put_contents($path, $views + 1);
+}
+
+function gmail()
+{
+    $mail = new PHPMailer();
+    $mail->IsSMTP();
+    $mail->CharSet = 'UTF-8';
+
+    $mail->Host       = "ssl://smtp.gmail.com"; // SMTP server example
+    $mail->SMTPDebug  = 0;                     // enables SMTP debug information (for testing)
+    $mail->SMTPAuth   = true;                  // enable SMTP authentication
+    $mail->Port       = 465;                    // set the SMTP port for the GMAIL server
+    $mail->Username   = "w.nicolasperdomo@gmail.com"; // SMTP account username example
+    $mail->Password   = "Np!1202236";
+    $mail->setFrom('w.nicolasperdomo@gmail.com', 'JF L');
+
+    /* Add a recipient. */
+    $mail->addAddress('w.nicolasperdomo@gmail.com', 'Test 1');
+
+
+    /* Set the subject. */
+    $mail->Subject = 'mail subject ';
+
+    /* Set the mail message body. */
+    $mail->Body = 'Demo mail is working';
+    try {
+        echo "Email send";
+        $mail->send();
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
 }
 
 function checkInput($name, $maxlength = 0)

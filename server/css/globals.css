@@ -23,11 +23,6 @@ footer {
     font-weight: bold;
 }
 
-.message{
-    color: lightpink;
-    font-weight: bold;
-}
-
 .office_list_form{
     display: inline;
 }
@@ -35,4 +30,8 @@ footer {
 .office_list_form > button > i{
     width: 10px;
     height: auto;
+}
+
+.office_form{
+    display: inline;
 }

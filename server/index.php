@@ -124,6 +124,7 @@ function main()
             customers::listJSON();
             break;
         case 500:
+            #gmail();
             if (isset($_SESSION["email"])) {
                 offices::list();
             } else {

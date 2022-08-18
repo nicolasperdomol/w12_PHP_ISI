@@ -23,11 +23,11 @@ class offices
         $offices = $DB->querySelect("SELECT officeCode, city, addressLine1, country FROM offices");
         $page_data = DEFAULT_PAGE_DATA;
         $page_data["content"] = '<h2>List of our offices</h2>';
-        $page_data['content'] .= ($message != null ? "<div id='message' style='color:#ed0000'><b>$message</b></div>" : '');
+        $page_data['content'] .= ($message != null ? "<div class=\"alert alert-danger\" role=\"alert\"><b>$message</b></div>" : '');
         $page_data['content'] .= <<<HTML
         <form method="GET">
             <input type="hidden" name="op" value="502">
-            <input style="width:100px" name="office_id" placeholder="office id" type="number" min="0" max="99"/>
+            <input style="width:100px" name="office_id" placeholder="office code" type="text"/>
             <button type="submit">search</button>
         </form>
        HTML;
@@ -64,11 +64,11 @@ class offices
             //On the last office add an extra row
             if ($office_count == count($offices) - 1) {
                 $row_data .= <<<HTML
-                            <tr class="table-secondary">
+                            <tr class="table-light">
                                 <td align="center" colspan=5>
                                     <form method="POST" action="index.php">
                                         <input type="hidden" name="op" value="503">
-                                        <button type="submit">+</button>
+                                        <button class="btn btn-outline-primary" type="submit">+</button>
                                 </td>
                             </tr>
                         HTML;
@@ -116,7 +116,7 @@ class offices
         $offices = $DB->querySelectParam("SELECT officeCode, city, phone, addressLine1, addressLine2, state, country, postalCode, territory FROM offices WHERE officeCode = ?", $params);
         if (count($offices) == 0) {
             header("HTTP/1.0 404 'office_id' does not match with any record");
-            self::list("We are sorry, an office with that id was not found");
+            self::list("We are sorry, we did not found an office with that code");
             return;
         }
         $page_data = DEFAULT_PAGE_DATA;
@@ -189,7 +189,7 @@ class offices
 
         $error_message = "";
         if ($user_info != null) {
-            $error_message = "<div class='message'>This office is already registered, please choose a different office code</div>";
+            $error_message = "<div class=\"alert alert-danger\" role=\"alert\">This office is already registered, please choose a different office code</div>";
             $city = get_user_info_str($user_info, "city");
             $phone = get_user_info_str($user_info, "phone");
             $addressLine1 = get_user_info_str($user_info, "addressLine1");
@@ -198,10 +198,30 @@ class offices
             $country = get_user_info_str($user_info, "country");
             $postalCode = get_user_info_str($user_info, "postalCode");
             $territory = get_user_info_str($user_info, "territory");
+        } elseif (isset($_REQUEST['officeCode'])) {
+            $officeCode = $_REQUEST['officeCode'];
+            $DB = new db_pdo();
+            $DB->connect();
+            $record = $DB->querySelectParam("SELECT * FROM `offices` WHERE `officeCode` = ?", [$officeCode]);
+            if (count($record) > 0) {
+                $record = $record[0];
+                $city = $record["city"];
+                $phone = $record['phone'];
+                $addressLine1 = $record['addressLine1'];
+                $addressLine2 = $record['addressLine2'];
+                $state = $record['state'];
+                $country = $record['country'];
+                $postalCode = $record['postalCode'];
+                $territory = $record['territory'];
+            } else {
+                header("HTTP/1.0 404 officeCode not found in the database");
+            };
         }
+
+
         $subsequent_op = "505";
         $office_form =
-            "<form id='office_form' method='POST' action='index.php'>
+            "<form class='office_form' method='POST' action='index.php'>
                     <input type='hidden' name='op' value=" . $subsequent_op . ">";
 
         if (!isset($_REQUEST['officeCode'])) {
@@ -219,9 +239,11 @@ class offices
                     <input required type='text' name='country' placeholder='Country*' maxlength=" . offices::MAX_STRLEN_COUNTRY . " " . append_html_value($country) . ">
                     <input required type='text' name='postalCode' placeholder='Postal Code*' maxlength=" . offices::MAX_STRLEN_POSTAL_CODE . " " . append_html_value($postalCode) . ">
                     <input required type='text' name='territory' placeholder='Territory*' maxlength=" . offices::MAX_STRLEN_TERRITORY . " " . append_html_value($territory) . ">
-                    <button type='submit' name='cancel' value='1'>cancel</button>
+
                     <button type='submit'>save</button>
                 </form>";
+
+        $office_form .= "<form class='office_form' action=\"index.php\"><input type=\"hidden\" name='op' value='500'><button type='submit'>cancel</button></form>";
 
         $page_data = DEFAULT_PAGE_DATA;
         $page_data['content'] = <<<HTML
@@ -234,11 +256,6 @@ class offices
 
     public static function save()
     {
-        $cancel_operation = isset($_REQUEST['cancel']);
-        if ($cancel_operation) {
-            header("location: index.php?op=500");
-        }
-
         $city = checkInput("city", offices::MAX_STRLEN_CITY);
         $phone = checkInput("phone", offices::MAX_STRLEN_PHONE);
         $addressLine1 = checkInput("addressLine1", offices::MAX_STRLEN_ADDRESS_LINE_1);
@@ -293,6 +310,8 @@ class offices
 
         if ($successful_transaction) {
             header("location: index.php?op=502&office_id=$officeCode");
+        } else {
+            header("location: index.php?op=500");
         }
     }
 
