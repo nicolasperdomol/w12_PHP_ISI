@@ -127,8 +127,26 @@ function main()
             if (isset($_SESSION["email"])) {
                 offices::list();
             } else {
-                header("HTTP/1.0 503 todo display an error page");
+                header("HTTP/1.0 503 We are sorry, operation 511 first you must log in your account");
+                $pageData = DEFAULT_PAGE_DATA;
+                $pageData['content'] = "<div style='margin-top:1%; margin-bottom:1%;'><b>We are sorry but first you must log in your account <a href=\"index.php?op=1\">here</a></b></div>";
+                webpage::render($pageData);
             }
+            break;
+        case 502:
+            offices::display();
+            break;
+        case 503:
+            offices::display_office_form();
+            break;
+        case 504:
+            offices::delete();
+            break;
+        case 505:
+            offices::save();
+            break;
+        case 520:
+            offices::listJSON();
             break;
         default:
             header("HTTP/1.0 400 This operation won't be implemented in the near future, try a different operation.");

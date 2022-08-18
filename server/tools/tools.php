@@ -7,6 +7,19 @@ function logVisitor()
     fclose($f);
 }
 
+function get_user_info_str($user_info, $key)
+{
+    return isset($user_info["$key"]) ? $user_info["$key"] : "";
+}
+
+/**
+ * Add a default value if there is data to autofill in a form
+ */
+function append_html_value($value)
+{
+    return $value != null && $value != "" ? " value=\"" . $value . "\" " : "";
+}
+
 function viewCount($path)
 {
     logVisitor();
@@ -18,7 +31,7 @@ function viewCount($path)
 function checkInput($name, $maxlength = 0)
 {
     if (isset($_REQUEST[$name])) {
-        if (($maxlength > 0) and (strlen($_REQUEST[$name])) > $maxlength) {
+        if (($maxlength > 0) and (strlen(htmlspecialchars($_REQUEST[$name]))) > $maxlength) {
             header("HTTP/1.0 400 Input greater than maxlength in tools::checkInput()");
             exit("HTTP/1.0 400 Input greater than maxlength in tools::checkInput()");
         }

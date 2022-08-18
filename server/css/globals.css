@@ -22,3 +22,17 @@ footer {
     background-color: lightpink;
     font-weight: bold;
 }
+
+.message{
+    color: lightpink;
+    font-weight: bold;
+}
+
+.office_list_form{
+    display: inline;
+}
+
+.office_list_form > button > i{
+    width: 10px;
+    height: auto;
+}
