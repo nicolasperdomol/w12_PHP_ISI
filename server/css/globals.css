@@ -6,8 +6,8 @@ header {
 }
 
 nav {
-    background-color: grey;
-    color: white;
+    background-color: rgb(224, 224, 224);
+    color: rgb(0, 0, 0);
     padding: 10px;
 }
 

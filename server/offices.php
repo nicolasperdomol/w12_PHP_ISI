@@ -22,7 +22,7 @@ class offices
         $DB->connect();
         $offices = $DB->querySelect("SELECT officeCode, city, addressLine1, country FROM offices");
         $page_data = DEFAULT_PAGE_DATA;
-        $page_data["content"] = '<h2>List of our offices</h2>';
+        $page_data["content"] = '<br><h2>Our offices</h2>';
         $page_data['content'] .= ($message != null ? "<div class=\"alert alert-danger\" role=\"alert\"><b>$message</b></div>" : '');
         $page_data['content'] .= <<<HTML
         <form method="GET">

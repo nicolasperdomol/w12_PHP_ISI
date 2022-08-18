@@ -23,7 +23,7 @@
         echo $default_options;
     } else {
         //After successfully login
-        echo "<a href='index.php?op=5'>Logout</a><span>" . $_SESSION['email'] . "</span>";
+        echo "<a href='index.php?op=5'>Logout</a><span> <b>" . $_SESSION['email'] . "</b>  </span>";
     }
 
     ?>
