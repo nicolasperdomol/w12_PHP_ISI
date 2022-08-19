@@ -135,13 +135,17 @@ class orders
                 <div class='row justify-content-center'>
                     <div class='col-3'>
                         <br>
-                        <form action='index.php'><input type='hidden' name='op' value=''><button class='btn btn-primary'>a</button></form>
+
                         <br><br>
                         <div><b>Comments: </b></div>
                     </div>
                     <div class='col-3'>
                         <br>
-                        <form action='index.php'><input type='hidden' name='op' value=''><button class='btn btn-primary'>a</button></form>
+                        <form class='order_list_form' action="index.php" method="POST">
+                                    <input type="hidden" name="op" value="203">
+                                    <input type="hidden" name="orderNumber" value="{$order['orderNumber']}">
+                                    <button class="btn btn-outline-success"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                            </form>
                         <br><br>
                         <div><i>{$order['comments']}</i></div>
                     </div>
