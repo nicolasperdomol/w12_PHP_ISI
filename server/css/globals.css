@@ -28,10 +28,35 @@ footer {
 }
 
 .office_list_form > button > i{
-    width: 10px;
     height: auto;
+    width: 10px;
+}
+
+
+#office_form{
+    width:330px;
 }
 
 .office_form{
     display: inline;
+}
+
+#office_id_input_text{
+    border-radius: 7px;
+}
+
+#search_button{
+    margin-bottom: 2%;
+}
+
+#office_form_container > div > form{
+    padding: 2%;
+    margin-bottom: 2%;
+    border-radius: 2%;
+    background-color: rgb(245, 245, 245);
+    box-shadow: 0px 10px 10px #747474;
+}
+
+#display_all{
+    margin-left: 0.5%;
 }

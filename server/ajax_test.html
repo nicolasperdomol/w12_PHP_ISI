@@ -10,7 +10,7 @@
     <hr>
 
     <!-- Using REST API with AJAX calls ---------------- --------------------------------------->
-    <button id="get_products_button">Get all products from server</button><br>
+    <button id="get_products_button">Get all offices from server</button><br>
     Status: <b><span id="status">Click the button</span></b><br>
     <div id="list" style="border:1px dashed black">Content displayed here</div>
 
@@ -28,7 +28,7 @@
                     $("#status").html("Waiting for server...")
                     $("#list").html("") // clear previous result
                     $.get(
-                        'index.php?op=520',
+                        'index.php?op=509',
                         function (response, textStatus) {
                             // this executes only on success code returned 2xx like 200, 201, etc..
                             //console.log(response)

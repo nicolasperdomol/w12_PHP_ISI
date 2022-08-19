@@ -146,7 +146,7 @@ function main()
         case 505:
             offices::save();
             break;
-        case 520:
+        case 509:
             offices::listJSON();
             break;
         default:

@@ -25,10 +25,14 @@ class offices
         $page_data["content"] = '<br><h2>Our offices</h2>';
         $page_data['content'] .= ($message != null ? "<div class=\"alert alert-danger\" role=\"alert\"><b>$message</b></div>" : '');
         $page_data['content'] .= <<<HTML
-        <form method="GET">
-            <input type="hidden" name="op" value="502">
-            <input style="width:100px" name="office_id" placeholder="office code" type="text"/>
-            <button type="submit">search</button>
+                <form method="GET">
+                    <input type="hidden" name="op" value="502">
+                    <div class="w-25 p-3">
+                HTML;
+        $page_data['content'] .= "<input id='office_id_input_text' name='office_id' placeholder='office code' maxlength='" . self::MAX_STRLEN_OFFICE_CODE . "' type='text'/>";
+        $page_data['content'] .= <<<HTML
+            <button id='search_button' class='btn btn-sm btn-outline-primary' type="submit">search</button>
+        </div>
         </form>
        HTML;
 
@@ -68,7 +72,7 @@ class offices
                                 <td align="center" colspan=5>
                                     <form method="POST" action="index.php">
                                         <input type="hidden" name="op" value="503">
-                                        <button class="btn btn-outline-primary" type="submit">+</button>
+                                        <button class="btn btn-outline-primary" id='add_icon' type="submit">+</button>
                                 </td>
                             </tr>
                         HTML;
@@ -121,7 +125,7 @@ class offices
         }
         $page_data = DEFAULT_PAGE_DATA;
         $page_data["content"] .= <<<HTML
-                    <br><a href="index.php?op=500"><< Display all</a>
+                    <br><a id='display_all' href="index.php?op=500"><< Display all</a>
                 HTML;
         $row_data = "";
         foreach ($offices as $office) {
@@ -176,6 +180,9 @@ class offices
         webpage::render($page_data);
     }
 
+    /**
+     * Create an office form and then display that to the user, used in offices::save(), this form is different depending if we intentend to create a new record or update a past record.
+     */
     public static function display_office_form($user_info = null)
     {
         $city = "";
@@ -221,33 +228,32 @@ class offices
 
         $subsequent_op = "505";
         $office_form =
-            "<form class='office_form' method='POST' action='index.php'>
+            "<div id='office_form_container' class='container-fluid'><div class='d-flex justify-content-center'><form id='office_form' class='office_form' method='POST' action='index.php'>
                     <input type='hidden' name='op' value=" . $subsequent_op . ">";
 
         if (!isset($_REQUEST['officeCode'])) {
-            $office_form .= "<input required type='text' name='officeCode' placeholder='Office code*' maxlength='" . offices::MAX_STRLEN_OFFICE_CODE . "'>
+            $office_form .= "<div class=\"mb-3\"><label for=\"officeCode\" class=\"form-label\">Office code: <input class=\"form-control\" required type='text' id='officeCode' name='officeCode' placeholder='Office code*' maxlength='" . offices::MAX_STRLEN_OFFICE_CODE . "'></label></div>
             <input type='hidden' name='action' value='INSERT'>";
         } else {
             $office_form .= "<input type='hidden' name='officeCode' value=" . $_REQUEST['officeCode'] . ">";
         }
 
-        $office_form .= "<input required type='text' name='city' placeholder='City*' maxlength=" . offices::MAX_STRLEN_CITY . " " . append_html_value($city) . ">
-                    <input required type='text' name='phone' placeholder='Phone*' maxlength=" . offices::MAX_STRLEN_PHONE . " " . append_html_value($phone) . ">
-                    <input required  type='text' name='addressLine1' placeholder='Address Line 1*' maxlength=" . offices::MAX_STRLEN_ADDRESS_LINE_1 . " " . append_html_value($addressLine1) . ">
-                    <input type='text' name='addressLine2' placeholder='Address Line 2' maxlength=" . offices::MAX_STRLEN_ADDRESS_LINE_2 . " " . append_html_value($addressLine2) . ">
-                    <input type='text' name='state' placeholder='State' maxlength=" . offices::MAX_STRLEN_STATE . " " . append_html_value($state) . ">
-                    <input required type='text' name='country' placeholder='Country*' maxlength=" . offices::MAX_STRLEN_COUNTRY . " " . append_html_value($country) . ">
-                    <input required type='text' name='postalCode' placeholder='Postal Code*' maxlength=" . offices::MAX_STRLEN_POSTAL_CODE . " " . append_html_value($postalCode) . ">
-                    <input required type='text' name='territory' placeholder='Territory*' maxlength=" . offices::MAX_STRLEN_TERRITORY . " " . append_html_value($territory) . ">
+        $office_form .= "<div class=\"mb-3\"><label for=\"city\" class=\"form-label\">City: <input id='city' class=\"form-control\" required type='text' name='city' placeholder='City*' maxlength=" . offices::MAX_STRLEN_CITY . " " . append_html_value($city) . "></label></div>
+                    <div class=\"mb-3\"><label for=\"phone\" class=\"form-label\">Phone:<input id='phone' class=\"form-control\" required type='text' name='phone' placeholder='Phone*' maxlength=" . offices::MAX_STRLEN_PHONE . " " . append_html_value($phone) . "></label></div>
+                    <div class=\"mb-3\"><label for=\"addressLine1\" class=\"form-label\">Address Line 1:<input id='addressLine1' class=\"form-control\" required  type='text' name='addressLine1' placeholder='Address Line 1*' maxlength=" . offices::MAX_STRLEN_ADDRESS_LINE_1 . " " . append_html_value($addressLine1) . "></label></div>
+                    <div class=\"mb-3\"><label for=\"addressLine2\" class=\"form-label\">Address Line 2:<input id='addressLine2' class=\"form-control\" type='text' name='addressLine2' placeholder='Address Line 2' maxlength=" . offices::MAX_STRLEN_ADDRESS_LINE_2 . " " . append_html_value($addressLine2) . "></label></div>
+                    <div class=\"mb-3\"><label for=\"state\" class=\"form-label\">State:<input id='state' class=\"form-control\" type='text' name='state' placeholder='State' maxlength=" . offices::MAX_STRLEN_STATE . " " . append_html_value($state) . "></label></div>
+                    <div class=\"mb-3\"><label for=\"country\" class=\"form-label\">Country:<input id='country' class=\"form-control\" required type='text' name='country' placeholder='Country*' maxlength=" . offices::MAX_STRLEN_COUNTRY . " " . append_html_value($country) . "></label></div>
+                    <div class=\"mb-3\"><label for=\"postalCode\" class=\"form-label\">Postal Code:<input id='postalCode' class=\"form-control\" required type='text' name='postalCode' placeholder='Postal Code*' maxlength=" . offices::MAX_STRLEN_POSTAL_CODE . " " . append_html_value($postalCode) . "></label></div>
+                    <div class=\"mb-3\"><label for=\"territory\" class=\"form-label\">Territory:<input id='territory' class=\"form-control\" required type='text' name='territory' placeholder='Territory*' maxlength=" . offices::MAX_STRLEN_TERRITORY . " " . append_html_value($territory) . "></label></div>
 
-                    <button type='submit'>save</button>
-                </form>";
-
-        $office_form .= "<form class='office_form' action=\"index.php\"><input type=\"hidden\" name='op' value='500'><button type='submit'>cancel</button></form>";
+                    <button class=\"btn btn-outline-secondary btn-sm\" formnovalidate type='submit' name='cancel' value='1'>cancel</button>
+                    <button class=\"btn btn-outline-primary btn-sm\" type='submit'>save</button>
+                </form></div></div>";
 
         $page_data = DEFAULT_PAGE_DATA;
         $page_data['content'] = <<<HTML
-        <br><a href="index.php?op=500"><< Display all</a>
+        <br><a id='display_all' href="index.php?op=500"><< Display all</a>
         HTML;
         $page_data['content'] .= $error_message;
         $page_data['content'] .= $office_form;
@@ -265,6 +271,10 @@ class offices
         $postalCode = checkInput("postalCode", offices::MAX_STRLEN_POSTAL_CODE);
         $territory = checkInput("territory", offices::MAX_STRLEN_TERRITORY);
         $isOfficeCode = isset($_REQUEST['officeCode']);
+        if (isset($_REQUEST['cancel'])) {
+            header('location: index.php?op=500');
+            return;
+        }
         if ($isOfficeCode) {
             $officeCode = $_REQUEST['officeCode'];
         }
@@ -340,11 +350,18 @@ class offices
         $DB = new db_pdo();
         $DB->connect();
 
-        $customers = $DB->table("offices");
+        $offices = $DB->table("offices");
 
-        $arrayJSON = json_encode($customers, JSON_PRETTY_PRINT);
+        $arrayJSON = json_encode($offices, JSON_PRETTY_PRINT);
         header('Content-Type: application/json; charset=UTF-8');
         http_response_code(200);
         echo $arrayJSON;
+    }
+
+    private static function is_office_deletable($officeCode)
+    {
+        $DB = new db_pdo();
+        $DB->connect();
+        $qry = "SELECT * FROM employees WHERE officeCode = ?";
     }
 }
