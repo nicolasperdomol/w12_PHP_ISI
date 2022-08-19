@@ -6,11 +6,17 @@
     <a href='index.php?op=120'>ProductsJSON</a>
     <a href='index.php?op=50'>Download</a>
     <a href='index.php?op=51'>Redirect</a>
+
+    <!--Offices operations -->
+    <a href='index.php?op=200'>Orders</a>
+
     <a href='index.php?op=400'>Customers</a>
     <a href='index.php?op=420'>CustomersJSON</a>
 
     <!--Offices operations -->
     <a href='index.php?op=500'>Offices</a>
+
+
 
     <?php
     $default_options = <<<HTML

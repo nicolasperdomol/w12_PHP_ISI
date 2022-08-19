@@ -9,6 +9,7 @@ require_once "tools/tools.php";
 require_once "users.php";
 require_once "customers.php";
 require_once "offices.php";
+require_once "orders.php";
 
 function createFiles()
 {
@@ -113,6 +114,51 @@ function main()
         case 120:
             products::listJSON();
             break;
+
+        case 200:
+            if (isset($_SESSION["email"])) {
+                orders::list();
+            } else {
+                header("HTTP/1.0 401 We are sorry, first you must log in your account");
+                $pageData = DEFAULT_PAGE_DATA;
+                $pageData['content'] = "<div style='margin-top:1%; margin-bottom:1%;'><b>We are sorry but first you must log in your account <a href=\"index.php?op=1\">here</a></b></div>";
+                webpage::render($pageData);
+            }
+            break;
+
+        case 202:
+            if (isset($_SESSION["email"])) {
+                orders::display();
+            } else {
+                header("HTTP/1.0 401 We are sorry, first you must log in your account");
+                $pageData = DEFAULT_PAGE_DATA;
+                $pageData['content'] = "<div style='margin-top:1%; margin-bottom:1%;'><b>We are sorry but first you must log in your account <a href=\"index.php?op=1\">here</a></b></div>";
+                webpage::render($pageData);
+            }
+            break;
+
+        case 203:
+            if (isset($_SESSION["email"])) {
+                orders::edit();
+            } else {
+                header("HTTP/1.0 401 We are sorry, first you must log in your account");
+                $pageData = DEFAULT_PAGE_DATA;
+                $pageData['content'] = "<div style='margin-top:1%; margin-bottom:1%;'><b>We are sorry but first you must log in your account <a href=\"index.php?op=1\">here</a></b></div>";
+                webpage::render($pageData);
+            }
+            break;
+
+        case 205:
+            if (isset($_SESSION["email"])) {
+                orders::save();
+            } else {
+                header("HTTP/1.0 401 We are sorry, first you must log in your account");
+                $pageData = DEFAULT_PAGE_DATA;
+                $pageData['content'] = "<div style='margin-top:1%; margin-bottom:1%;'><b>We are sorry but first you must log in your account <a href=\"index.php?op=1\">here</a></b></div>";
+                webpage::render($pageData);
+            }
+            break;
+
         case 400:
             if (isset($_SESSION["email"])) {
                 customers::list();
@@ -124,7 +170,6 @@ function main()
             customers::listJSON();
             break;
         case 500:
-            #gmail();
             if (isset($_SESSION["email"])) {
                 offices::list();
             } else {

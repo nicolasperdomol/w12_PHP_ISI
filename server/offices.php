@@ -118,6 +118,8 @@ class offices
         }
         $params = [$_REQUEST['office_id']];
         $offices = $DB->querySelectParam("SELECT officeCode, city, phone, addressLine1, addressLine2, state, country, postalCode, territory FROM offices WHERE officeCode = ?", $params);
+        #TODO: CHECK IF THIS DIDNT CHANGE,added in final exam
+        $DB->disconnect();
         if (count($offices) == 0) {
             header("HTTP/1.0 404 'office_id' does not match with any record");
             self::list("We are sorry, we did not found an office with that code");
