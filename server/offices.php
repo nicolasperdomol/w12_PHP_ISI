@@ -16,14 +16,15 @@ class offices
     /**
      * Operation #500: Present a table list based on the table 'Offices' from the classicmodels database,
      */
-    public static function list($message = null)
+    public static function list($error_message = null, $success_message = null)
     {
         $DB = new db_pdo();
         $DB->connect();
         $offices = $DB->querySelect("SELECT officeCode, city, addressLine1, country FROM offices");
         $page_data = DEFAULT_PAGE_DATA;
         $page_data["content"] = '<br><h2>Our offices</h2>';
-        $page_data['content'] .= ($message != null ? "<div class=\"alert alert-danger\" role=\"alert\"><b>$message</b></div>" : '');
+        $page_data['content'] .= ($error_message != null ? "<div class=\"alert alert-danger\" role=\"alert\"><b>$error_message</b></div>" : '');
+        $page_data['content'] .= ($success_message != null ? "<div class=\"alert alert-success\" role=\"alert\"><b>$success_message</b></div>" : '');
         $page_data['content'] .= <<<HTML
                 <form method="GET">
                     <input type="hidden" name="op" value="502">
@@ -105,20 +106,26 @@ class offices
      * Displays details of the selected record.
      * $_REQUEST["office_id"] may be used to present a single row of the table.
      */
-    public static function display()
+    public static function display($success_message=null, $officeCode = null)
     {
         $DB = new db_pdo();
         $DB->connect();
-        if (!isset($_REQUEST['office_id'])) {
+        $params = null;
+        if (!isset($_REQUEST['office_id']))
             header("HTTP/1.0 400 offices::display() requires 'office_id' parameter and was not found in the request");
-        } elseif ($_REQUEST['office_id'] == "") {
+        elseif ($_REQUEST['office_id'] == "") {
             header("HTTP/1.0 400 office::display() does not accept an empty string as a parameter for 'office_id'");
             self::list("Please enter an id for the office you are looking for");
             return;
         }
-        $params = [$_REQUEST['office_id']];
+
+        if($officeCode != null)
+            $params = [$officeCode];
+        else
+            $params = [$_REQUEST['office_id']];
+
+
         $offices = $DB->querySelectParam("SELECT officeCode, city, phone, addressLine1, addressLine2, state, country, postalCode, territory FROM offices WHERE officeCode = ?", $params);
-        #TODO: CHECK IF THIS DIDNT CHANGE,added in final exam
         $DB->disconnect();
         if (count($offices) == 0) {
             header("HTTP/1.0 404 'office_id' does not match with any record");
@@ -126,6 +133,8 @@ class offices
             return;
         }
         $page_data = DEFAULT_PAGE_DATA;
+        $page_data["content"] = "";
+        $page_data['content'] .= ($success_message != null ? "<div class=\"alert alert-success\" role=\"alert\"><b>$success_message</b></div>" : '');
         $page_data["content"] .= <<<HTML
                     <br><a id='display_all' href="index.php?op=500"><< Display all</a>
                 HTML;
@@ -241,7 +250,7 @@ class offices
         }
 
         $office_form .= "<div class=\"mb-3\"><label for=\"city\" class=\"form-label\">City: <input id='city' class=\"form-control\" required type='text' name='city' placeholder='City*' maxlength=" . offices::MAX_STRLEN_CITY . " " . append_html_value($city) . "></label></div>
-                    <div class=\"mb-3\"><label for=\"phone\" class=\"form-label\">Phone:<input id='phone' class=\"form-control\" required type='text' name='phone' placeholder='Phone*' maxlength=" . offices::MAX_STRLEN_PHONE . " " . append_html_value($phone) . "></label></div>
+                    <div class=\"mb-3\"><label for=\"phone\" class=\"form-label\">Phone:<input id='phone' class=\"form-control\" required type='text' pattern='[\+][0-9]{1,4}\s[\(][0-9]{1,4}[\)][0-9]{1,4}[\-][0-9]{1,5}' name='phone' placeholder='Phone*' title='Please follow the format: +X (XXX)XXX-XXXX' maxlength=" . offices::MAX_STRLEN_PHONE . " " . append_html_value($phone) . "></label><div class='form-text'>Format: +X (XXX)XXX-XXXX</div><div class='form-text'>Phone example: +1 (514)834-0059</div></div>
                     <div class=\"mb-3\"><label for=\"addressLine1\" class=\"form-label\">Address Line 1:<input id='addressLine1' class=\"form-control\" required  type='text' name='addressLine1' placeholder='Address Line 1*' maxlength=" . offices::MAX_STRLEN_ADDRESS_LINE_1 . " " . append_html_value($addressLine1) . "></label></div>
                     <div class=\"mb-3\"><label for=\"addressLine2\" class=\"form-label\">Address Line 2:<input id='addressLine2' class=\"form-control\" type='text' name='addressLine2' placeholder='Address Line 2' maxlength=" . offices::MAX_STRLEN_ADDRESS_LINE_2 . " " . append_html_value($addressLine2) . "></label></div>
                     <div class=\"mb-3\"><label for=\"state\" class=\"form-label\">State:<input id='state' class=\"form-control\" type='text' name='state' placeholder='State' maxlength=" . offices::MAX_STRLEN_STATE . " " . append_html_value($state) . "></label></div>
@@ -286,8 +295,8 @@ class offices
         $sql_query = null;
         $params = null;
 
-        $flag = isset($_REQUEST['action']) && $_REQUEST['action'] === 'INSERT';
-        if ($flag && $isOfficeCode) {
+        $is_insert_request = isset($_REQUEST['action']) && $_REQUEST['action'] === 'INSERT';
+        if ($is_insert_request && $isOfficeCode) {
             //First search is the PK_officeCode is already in the database
             $record = $DB->querySelectParam("SELECT * FROM `offices` WHERE `officeCode` = ?", [$officeCode]);
             if (count($record) > 0) {
@@ -320,8 +329,11 @@ class offices
         $successful_transaction = (($DB->queryParam($sql_query, $params))->rowCount()) > 0;
         $DB->disconnect();
 
-        if ($successful_transaction) {
-            header("location: index.php?op=502&office_id=$officeCode");
+        if ($successful_transaction && $is_insert_request) {
+            self::display("Office #$officeCode created", $officeCode);
+            #header("location: index.php?op=502&office_id=$officeCode");
+        } elseif ($successful_transaction && !$is_insert_request){
+            self::display("Office #$officeCode updated", $officeCode);
         } else {
             header("location: index.php?op=500");
         }
@@ -337,13 +349,23 @@ class offices
         }
         $params = [$_REQUEST['office_id']];
         $qry = "DELETE FROM `offices` WHERE `offices`.`officeCode` = ?";
-        $is_office_deleted = ($DB->queryParam($qry, $params))->rowCount() == 1;
-        if ($is_office_deleted) {
-            header("LOCATION:index.php?op=500");
+        $employees = offices::select_employees_by_officeCode($params[0]);
+
+        if (count($employees) == 0) {
+            $is_office_deleted = ($DB->queryParam($qry, $params))->rowCount() == 1;
+            if ($is_office_deleted) {
+                offices::list(null, "Office #$params[0] was successfully deleted");
+            } else {
+                //record was not erase
+                header("HTTP/1.0 304 offices::delete() was called but the query with id provided did not return any row");
+                self::display("We could not find an office with that id");
+            }
         } else {
-            //record was not erase
-            header("HTTP/1.0 304 offices::delete() was called but the query with id provided did not return any row");
-            self::display("We could not find an office with that id");
+            $employee_list = "";
+            foreach ($employees as $employee) {
+                $employee_list .= "[#" . $employee['employeeNumber'] . " - " . $employee['lastName'] . " " . $employee['firstName'] . "]<br>";
+            }
+            offices::list("Office #$params[0] cannot be deleted, there are still employees working in this office, first you will need to move these employees to a different office: <br><br>" . $employee_list, null);
         }
     }
 
@@ -360,10 +382,13 @@ class offices
         echo $arrayJSON;
     }
 
-    private static function is_office_deletable($officeCode)
+    private static function select_employees_by_officeCode($officeCode)
     {
         $DB = new db_pdo();
         $DB->connect();
         $qry = "SELECT * FROM employees WHERE officeCode = ?";
+        $employees = $DB->querySelectParam($qry, [$officeCode]);
+        $DB->disconnect();
+        return $employees;
     }
 }

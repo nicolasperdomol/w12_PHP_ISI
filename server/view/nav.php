@@ -5,7 +5,7 @@
     <a href='index.php?op=101'>Product Catalogue</a>
     <a href='index.php?op=120'>ProductsJSON</a>
     <a href='index.php?op=50'>Download</a>
-    <a href='index.php?op=51'>Redirect</a>
+    <!--<a href='index.php?op=51'>Redirect</a>-->
 
     <!--Offices operations -->
     <a href='index.php?op=200'>Orders</a>
@@ -15,6 +15,7 @@
 
     <!--Offices operations -->
     <a href='index.php?op=500'>Offices</a>
+    <a href="index.php?op=509">Offices JSON</a>
 
 
 

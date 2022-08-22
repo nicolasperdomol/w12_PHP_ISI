@@ -180,19 +180,54 @@ function main()
             }
             break;
         case 502:
-            offices::display();
+            if (isset($_SESSION["email"])) {
+                offices::display();
+            } else {
+                header("HTTP/1.0 503 We are sorry, operation 511 first you must log in your account");
+                $pageData = DEFAULT_PAGE_DATA;
+                $pageData['content'] = "<div style='margin-top:1%; margin-bottom:1%;'><b>We are sorry but first you must log in your account <a href=\"index.php?op=1\">here</a></b></div>";
+                webpage::render($pageData);
+            }
             break;
         case 503:
-            offices::display_office_form();
+            if (isset($_SESSION["email"])) {
+                offices::display_office_form();
+            } else {
+                header("HTTP/1.0 503 We are sorry, operation 511 first you must log in your account");
+                $pageData = DEFAULT_PAGE_DATA;
+                $pageData['content'] = "<div style='margin-top:1%; margin-bottom:1%;'><b>We are sorry but first you must log in your account <a href=\"index.php?op=1\">here</a></b></div>";
+                webpage::render($pageData);
+            }
             break;
         case 504:
-            offices::delete();
+            if (isset($_SESSION["email"])) {
+                offices::delete();
+            } else {
+                header("HTTP/1.0 503 We are sorry, operation 511 first you must log in your account");
+                $pageData = DEFAULT_PAGE_DATA;
+                $pageData['content'] = "<div style='margin-top:1%; margin-bottom:1%;'><b>We are sorry but first you must log in your account <a href=\"index.php?op=1\">here</a></b></div>";
+                webpage::render($pageData);
+            }
             break;
         case 505:
-            offices::save();
+            if (isset($_SESSION["email"])) {
+                offices::save();
+            } else {
+                header("HTTP/1.0 503 We are sorry, operation 511 first you must log in your account");
+                $pageData = DEFAULT_PAGE_DATA;
+                $pageData['content'] = "<div style='margin-top:1%; margin-bottom:1%;'><b>We are sorry but first you must log in your account <a href=\"index.php?op=1\">here</a></b></div>";
+                webpage::render($pageData);
+            }
             break;
         case 509:
-            offices::listJSON();
+            if (isset($_SESSION["email"])) {
+                offices::listJSON();
+            } else {
+                header("HTTP/1.0 503 We are sorry, operation 511 first you must log in your account");
+                $pageData = DEFAULT_PAGE_DATA;
+                $pageData['content'] = "<div style='margin-top:1%; margin-bottom:1%;'><b>We are sorry but first you must log in your account <a href=\"index.php?op=1\">here</a></b></div>";
+                webpage::render($pageData);
+            }
             break;
         default:
             header("HTTP/1.0 400 This operation won't be implemented in the near future, try a different operation.");

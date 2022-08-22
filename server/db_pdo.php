@@ -2,24 +2,24 @@
 class db_pdo
 {
     //remote infinity free web site http://w12-php.epizy.com/
-    const DB_SERVER_TYPE = 'mysql'; // MySQL or MariaDB server
-    const DB_HOST = 'sql108.epizy.com'; // local server on my laptop
-    const DB_PORT = 3306; // optional, default 3306, use 3307 for MariaDB
-    const DB_NAME = 'epiz_32411808_classicmodels'; // for Database classicmodels
-    const DB_CHARSET = 'utf8mb4'; //optional
-
-    const DB_USER_NAME = 'epiz_32411808'; // default user, other users can be created with phpMyAdmin
-    const DB_PASSWORD = 'XDAnf7xfDk';
-
-    //LOCALHOST
     // const DB_SERVER_TYPE = 'mysql'; // MySQL or MariaDB server
-    // const DB_HOST = '127.0.0.1'; // local server on my laptop
-    // const DB_PORT = 3307; // optional, default 3306, use 3307 for MariaDB
-    // const DB_NAME = 'classicmodels'; // for Database classicmodels
+    // const DB_HOST = 'sql108.epizy.com'; // local server on my laptop
+    // const DB_PORT = 3306; // optional, default 3306, use 3307 for MariaDB
+    // const DB_NAME = 'epiz_32411808_classicmodels'; // for Database classicmodels
     // const DB_CHARSET = 'utf8mb4'; //optional
 
-    // const DB_USER_NAME = 'root'; // default user, other users can be created with phpMyAdmin
-    // const DB_PASSWORD = '';
+    // const DB_USER_NAME = 'epiz_32411808'; // default user, other users can be created with phpMyAdmin
+    // const DB_PASSWORD = 'XDAnf7xfDk';
+
+    //LOCALHOST
+    const DB_SERVER_TYPE = 'mysql'; // MySQL or MariaDB server
+    const DB_HOST = '127.0.0.1'; // local server on my laptop
+    const DB_PORT = 3307; // optional, default 3306, use 3307 for MariaDB
+    const DB_NAME = 'classicmodels'; // for Database classicmodels
+    const DB_CHARSET = 'utf8mb4'; //optional
+
+    const DB_USER_NAME = 'root'; // default user, other users can be created with phpMyAdmin
+    const DB_PASSWORD = '';
 
     // PDO connection options
     const DB_OPTIONS = [
